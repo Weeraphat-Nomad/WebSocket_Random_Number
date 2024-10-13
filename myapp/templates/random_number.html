@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Random Number</title>
+</head>
+<body>
+    <h1>Random Number: <span id="random-number"></span></h1>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:8000/ws/random/');
+        {% comment %} const socket = new WebSocket('ws://192.168.1.112:8000/ws/random/'); {% endcomment %}
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            document.getElementById('random-number').textContent = data.number;
+        };
+
+        socket.onclose = function(event) {
+            console.log('WebSocket closed');
+        };
+
+        socket.onerror = function(error) {
+            console.log('WebSocket error:', error);
+        };
+    </script>
+</body>
+</html>
